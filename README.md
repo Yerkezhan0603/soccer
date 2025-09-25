@@ -59,6 +59,30 @@ sqlalchemy>=1.4.0    # SQL инструментарий и ORM
 
 Пароль: 0000
 
+*Примеры запросов*
+
+-- 1. Просмотр первых 10 записей (базовая проверка)
+SELECT * FROM "Match" LIMIT 10;
+
+-- 2. Запрос с фильтрацией и сортировкой
+SELECT match_api_id, season, date, home_team_api_id, away_team_api_id, 
+       home_team_goal, away_team_goal,
+       (home_team_goal + away_team_goal) AS total_goals
+FROM "Match"
+WHERE season = '2014/2015' AND (home_team_goal + away_team_goal) > 3
+ORDER BY date DESC
+LIMIT 50;
+
+-- 3. Агрегация с GROUP BY
+SELECT l.name AS league, 
+       ROUND(AVG(m.home_team_goal)::numeric, 2) AS avg_home_goals,
+       COUNT(*) as total_matches
+FROM "Match" m
+JOIN "League" l ON m.league_id = l.id
+GROUP BY l.name
+ORDER BY avg_home_goals DESC
+LIMIT 10;
+
 📁 Структура проекта
 
 text
