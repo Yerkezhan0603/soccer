@@ -97,9 +97,12 @@ Team_Attributes (1,458 записей тактики команд)
 📁 Структура проекта
 
 /project
- ├── schema.sql      # схема таблиц
  
- ├── data.sql        # данные
+ ├── database.sqlite        # данные
+
+ ├── main.py                  # Главный скрипт анализа на Python
+
+ ├── er_diagram.png      # Визуальная схема БД
  
  ├── queries.sql     # все SQL-запросы
  
