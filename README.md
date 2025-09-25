@@ -1,4 +1,4 @@
-Football Analytics Platform
+#Football Analytics Platform
 
 *Project Overview*
 This is a data analytics firm specializing in football/soccer data analysis. We provide insights to clubs, leagues, and betting companies by analyzing player performance, team statistics, match outcomes, and betting patterns using European football data.
@@ -35,6 +35,17 @@ Team_Attributes (1,458 записей тактики команд)
 Язык программирования: Python 3.8+
 
 Управление БД: PgAdmin 4
+
+
+## 📦 Установка
+
+### 1. Установите PostgreSQL
+Скачайте и установите PostgreSQL (версии 9.3+):  
+👉 https://www.postgresql.org/download/
+
+Во время установки:
+- задайте пароль суперпользователя (`postgres`)
+- запомните порт (по умолчанию `5432`)
 
 
 *Библиотеки Python*
@@ -85,20 +96,11 @@ Team_Attributes (1,458 записей тактики команд)
 
 📁 Структура проекта
 
-text
-
-football-analytics-project/
-
-│
-
-├── README.md                 # Документация проекта
-
-├── main.py                  # Главный скрипт анализа на Python
-
-├── queries.sql              # Коллекция SQL запросов
-
-├── requirements.txt         # Зависимости Python
-
-├── .gitignore              # Правила для Git
-
-├──  er_diagram.png      # Визуальная схема БД
+/project
+ ├── schema.sql      # схема таблиц
+ 
+ ├── data.sql        # данные
+ 
+ ├── queries.sql     # все SQL-запросы
+ 
+ └── README.md       # инструкция
