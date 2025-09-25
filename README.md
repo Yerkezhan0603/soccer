@@ -67,15 +67,13 @@ football-analytics-project/
 
 │
 
-├── README.md                 # Документация проекта (этот файл)
+├── README.md                 # Документация проекта
 
 ├── main.py                  # Главный скрипт анализа на Python
 
 ├── queries.sql              # Коллекция SQL запросов
 
 ├── requirements.txt         # Зависимости Python
-
-├── er_diagram.dbml         # Определение схемы БД
 
 ├── .gitignore              # Правила для Git
 
