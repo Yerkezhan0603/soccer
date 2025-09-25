@@ -40,8 +40,11 @@ Team_Attributes (1,458 записей тактики команд)
 *Библиотеки Python*
 
 python
+
 pandas>=1.3.0        # Манипуляции и анализ данных
+
 psycopg2-binary>=2.9.0  # Адаптер PostgreSQL для Python
+
 sqlalchemy>=1.4.0    # SQL инструментарий и ORM
 
 *Данные подключения к БД*
@@ -59,14 +62,25 @@ sqlalchemy>=1.4.0    # SQL инструментарий и ORM
 📁 Структура проекта
 
 text
+
 football-analytics-project/
+
 │
+
 ├── README.md                 # Документация проекта (этот файл)
+
 ├── main.py                  # Главный скрипт анализа на Python
+
 ├── queries.sql              # Коллекция SQL запросов
+
 ├── requirements.txt         # Зависимости Python
+
 ├── er_diagram.dbml         # Определение схемы БД
+
 ├── .gitignore              # Правила для Git
+
 │
+
 ├── images/
+
 │   └── er_diagram.png      # Визуальная схема БД
