@@ -1,4 +1,4 @@
-#Football Analytics Platform
+Football Analytics Platform
 
 *Project Overview*
 This is a data analytics firm specializing in football/soccer data analysis. We provide insights to clubs, leagues, and betting companies by analyzing player performance, team statistics, match outcomes, and betting patterns using European football data.
