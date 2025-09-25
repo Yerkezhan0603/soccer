@@ -39,13 +39,10 @@ Team_Attributes (1,458 записей тактики команд)
 
 *Библиотеки Python*
 
-python
 
-pandas>=1.3.0        # Манипуляции и анализ данных
-
-psycopg2-binary>=2.9.0  # Адаптер PostgreSQL для Python
-
-sqlalchemy>=1.4.0    # SQL инструментарий и ORM
+       pandas>=1.3.0        # Манипуляции и анализ данных
+       psycopg2-binary>=2.9.0  # Адаптер PostgreSQL для Python
+       sqlalchemy>=1.4.0    # SQL инструментарий и ORM
 
 *Данные подключения к БД*
 
