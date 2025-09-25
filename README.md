@@ -101,8 +101,4 @@ football-analytics-project/
 
 ├── .gitignore              # Правила для Git
 
-│
-
-├── images/
-
-│   └── er_diagram.png      # Визуальная схема БД
+├──  er_diagram.png      # Визуальная схема БД
