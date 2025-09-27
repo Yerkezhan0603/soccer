@@ -1,59 +1,79 @@
 import psycopg2
-import sys
+import re
 
+# Конфигурация подключения к PostgreSQL
 PG_HOST = "localhost"
 PG_DB = "data visualization"
 PG_USER = "postgres"
 PG_PASS = "0000"
 
-QUERIES_TO_RUN = [
-    # basic check: first 10 matches
-    ('First 10 matches', 'SELECT match_api_id, season, date, home_team_api_id, away_team_api_id, home_team_goal, away_team_goal FROM "Match" LIMIT 10;'),
+def read_sql_queries(filename):
+    """Считывает SQL-запросы из файла с метками -- QUERY N"""
+    queries = {}
+    current_label = None
+    current_sql = []
 
-    # aggregation: matches per season
-    ('Matches per season', 'SELECT season, COUNT(*) AS matches_count FROM "Match" GROUP BY season ORDER BY matches_count DESC LIMIT 10;'),
+    with open(filename, 'r', encoding='utf-8') as f:
+        for line in f:
+            line_strip = line.strip()
 
-    # join: avg home goals per league
-    ('Avg home goals per league', 'SELECT l.name AS league, AVG(m.home_team_goal) AS avg_home_goals FROM "Match" m JOIN "League" l ON m.league_id = l.id GROUP BY l.name ORDER BY avg_home_goals DESC LIMIT 10;'),
+            # Если это комментарий с меткой (-- QUERY N)
+            if line_strip.startswith("-- QUERY"):
+                # если был предыдущий запрос, сохраняем его
+                if current_label and current_sql:
+                    queries[current_label] = " ".join(current_sql).strip()
+                    current_sql = []
 
-    # analytical example: top scoring teams by total goals
-    ('Top scoring teams', '''
+                # новая метка
+                current_label = line_strip.replace("--", "").strip()
+            
+            # Если это обычная строка SQL
+            elif line_strip:
+                current_sql.append(line_strip)
 
-SELECT 
-    t.team_long_name,
-    SUM(
-        CASE WHEN m.home_team_api_id = t.team_api_id THEN m.home_team_goal ELSE 0 END +
-        CASE WHEN m.away_team_api_id = t.team_api_id THEN m.away_team_goal ELSE 0 END
-    ) AS total_goals
-FROM "Team" t
-LEFT JOIN "Match" m
-    ON (m.home_team_api_id = t.team_api_id OR m.away_team_api_id = t.team_api_id)
-GROUP BY t.team_long_name
-ORDER BY total_goals DESC
-LIMIT 20;
-    ''')
-]
+        # сохраняем последний запрос
+        if current_label and current_sql:
+            queries[current_label] = " ".join(current_sql).strip()
+
+    return queries
 
 def main():
     try:
-        conn = psycopg2.connect(host=PG_HOST, dbname=PG_DB, user=PG_USER, password=PG_PASS)
+        conn = psycopg2.connect(
+            host=PG_HOST,
+            dbname=PG_DB,
+            user=PG_USER,
+            password=PG_PASS
+        )
+        print("✅ Connected to database successfully!")
     except Exception as e:
-        print("Cannot connect to database:", e)
-        sys.exit(1)
+        print("❌ Unable to connect to database:", e)
+        return
+
+    # Читаем запросы
+    queries = read_sql_queries('queries.sql')
+    print(f"📌 Found {len(queries)} queries in queries.sql")
 
     cur = conn.cursor()
-    for title, q in QUERIES_TO_RUN:
-        print("\n===", title, "===\n")
+
+    for label, q in queries.items():
+        print(f"\n=== {label} ===\n")
         try:
             cur.execute(q)
-            rows = cur.fetchall()
-            # print header
-            colnames = [desc[0] for desc in cur.description]
-            print("\t".join(colnames))
-            for r in rows:
-                print("\t".join([str(x) if x is not None else 'NULL' for x in r]))
+
+            if cur.description:  # если есть результат
+                rows = cur.fetchall()
+                colnames = [desc[0] for desc in cur.description]
+
+                print("\t".join(colnames))
+                for r in rows:
+                    print("\t".join([str(x) if x is not None else 'NULL' for x in r]))
+            else:
+                print("Query executed successfully, no results to fetch.")
+
         except Exception as e:
-            print("Query failed:", e)
+            print(f"⚠️ Error executing {label}: {e}")
+
     cur.close()
     conn.close()
 
